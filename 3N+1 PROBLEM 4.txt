@@ -1,0 +1,22 @@
+i, j = map(int, input().split())
+
+start = min(i, j)
+end = max(i, j)
+
+max_len = 0
+
+for n in range(start, end + 1):
+    x = n
+    length = 1
+
+    while x != 1:
+        if x % 2 == 0:
+            x = x // 2
+        else:
+            x = 3 * x + 1
+        length += 1
+
+    if length > max_len:
+        max_len = length
+
+print(i, j, max_len)
