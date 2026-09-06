@@ -1,0 +1,80 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        if (scanner.hasNextInt()) {
+            int n = scanner.nextInt();
+            double[] arr = new double[n];
+            boolean isDecimal = false;
+
+            for (int i = 0; i < n; i++) {
+                String token = scanner.next();
+                if (token.contains(".")) {
+                    isDecimal = true;
+                }
+                arr[i] = Double.parseDouble(token);
+            }
+            
+            bucketSort(arr, n);
+            
+            // Output formatting based on input characteristics
+            for (int i = 0; i < n; i++) {
+                if (isDecimal) {
+                    System.out.printf("%.2f", arr[i]);
+                } else {
+                    // Truncate to a standard integer string if the input was whole integers
+                    System.out.print((int) arr[i]);
+                }
+                
+                if (i < n - 1) {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+        
+        scanner.close();
+    }
+
+    public static void bucketSort(double[] arr, int n) {
+        if (n <= 0) return;
+
+        // Find max and min values to safely map integer ranges
+        double maxVal = arr[0];
+        double minVal = arr[0];
+        for (int i = 1; i < n; i++) {
+            if (arr[i] > maxVal) maxVal = arr[i];
+            if (arr[i] < minVal) minVal = arr[i];
+        }
+
+        double range = maxVal - minVal;
+        
+        // If all elements are identical, the array is already sorted
+        if (range == 0) return;
+
+        // Create empty buckets
+        ArrayList<Double>[] buckets = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            buckets[i] = new ArrayList<>();
+        }
+
+        // Scatter elements across balanced numerical buckets
+        for (int i = 0; i < n; i++) {
+            int bucketIdx = (int) ((arr[i] - minVal) / range * (n - 1));
+            buckets[bucketIdx].add(arr[i]);
+        }
+
+        // Sort individual buckets and gather back into original array
+        int index = 0;
+        for (int i = 0; i < n; i++) {
+            Collections.sort(buckets[i]);
+            for (int j = 0; j < buckets[i].size(); j++) {
+                arr[index++] = buckets[i].get(j);
+            }
+        }
+    }
+}
