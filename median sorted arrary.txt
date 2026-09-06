@@ -1,0 +1,56 @@
+import java.util.Scanner;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        if (scanner.hasNextInt()) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            
+            int[] arr1 = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr1[i] = scanner.nextInt();
+            }
+            
+            int[] arr2 = new int[m];
+            for (int i = 0; i < m; i++) {
+                arr2[i] = scanner.nextInt();
+            }
+            
+            int totalSize = n + m;
+            int[] merged = new int[totalSize];
+            
+            int p1 = 0, p2 = 0, idx = 0;
+            
+            while (p1 < n && p2 < m) {
+                if (arr1[p1] <= arr2[p2]) {
+                    merged[idx++] = arr1[p1++];
+                } else {
+                    merged[idx++] = arr2[p2++];
+                }
+            }
+            
+            while (p1 < n) {
+                merged[idx++] = arr1[p1++];
+            }
+            
+            while (p2 < m) {
+                merged[idx++] = arr2[p2++];
+            }
+            
+            // FIXED: Force one decimal place formatting for both conditions
+            if (totalSize % 2 == 1) {
+                double median = merged[totalSize / 2];
+                System.out.printf("%.1f\n", median); 
+            } else {
+                int mid2 = totalSize / 2;
+                int mid1 = mid2 - 1;
+                double median = (merged[mid1] + merged[mid2]) / 2.0;
+                System.out.printf("%.1f\n", median);
+            }
+        }
+        
+        scanner.close();
+    }
+}
