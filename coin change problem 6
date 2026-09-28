@@ -1,0 +1,16 @@
+v, n = map(int, input().split())
+coins = list(map(int, input().split()))
+
+dp = [999999] * (v + 1)
+dp[0] = 0
+
+for i in range(1, v + 1):
+    for coin in coins:
+        if coin <= i:
+            dp[i] = min(dp[i], dp[i - coin] + 1)
+
+if dp[v] == 999999:
+    print(-1)
+else:
+    print(dp[v])
+
