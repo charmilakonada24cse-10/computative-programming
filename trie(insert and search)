@@ -1,0 +1,24 @@
+class Node:
+    def __init__(self):
+        self.child = {}
+        self.end = False
+root = Node()
+n = int(input())
+words = input().split(",")
+search = input().strip()
+for word in words:
+    p = root
+    for ch in word:
+        if ch not in p.child:
+            p.child[ch] = Node()
+        p = p.child[ch]
+    p.end = True
+p = root
+for ch in search:
+    if ch not in p.child:
+        print(0)
+        break
+    p = p.child[ch]
+else:
+    print(1 if p.end else 0)
+
