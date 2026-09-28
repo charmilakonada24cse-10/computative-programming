@@ -1,0 +1,40 @@
+from collections import deque
+V, E = map(int, input().split())
+graph = [[0] * V for _ in range(V)]
+for _ in range(E):
+    u, v, capacity = map(int, input().split())
+    graph[u][v] += capacity
+def bfs(source, sink, parent):
+    visited = [False] * V
+    q = deque([source])
+    visited[source] = True
+    while q:
+        u = q.popleft()
+        for v in range(V):
+            if not visited[v] and graph[u][v] > 0:
+                parent[v] = u
+                visited[v] = True
+                q.append(v)
+                if v == sink:
+                    return True
+    return False
+source = 0
+sink = V - 1
+max_flow = 0
+parent = [-1] * V
+while bfs(source, sink, parent):
+    flow = 10**18
+    v = sink
+    while v != source:
+        u = parent[v]
+        flow = min(flow, graph[u][v])
+        v = u
+    v = sink
+    while v != source:
+        u = parent[v]
+        graph[u][v] -= flow
+        graph[v][u] += flow
+        v = u
+    max_flow += flow
+print(max_flow)
+
