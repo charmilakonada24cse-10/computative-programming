@@ -1,0 +1,25 @@
+data = list(map(int, input().split()))
+n = data[0]
+grid = []
+for i in range(n):
+    grid.append(list(map(int, input().split())))
+dp = [[0] * n for _ in range(n)]
+dp[0][0] = grid[0][0]
+for i in range(n):
+    for j in range(n):
+        if i == 0 and j == 0:
+            continue
+        a = 999999999
+        b = 999999999
+        c = 999999999
+        if i > 0:
+            a = dp[i-1][j]
+        if j > 0:
+            b = dp[i][j-1]
+        if i > 0 and j > 0:
+            c = dp[i-1][j-1]
+        dp[i][j] = grid[i][j] + min(a, b, c)
+print(dp[n-1][n-1])
+
+
+
